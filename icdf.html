@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+<style id="jsbin-css">
+#chart {
+  border: 1px solid
+}
+</style>
+</head>
+<body>
+  <canvas id="chart" width="700px" height="500px"/>
+<script id="jsbin-javascript">
+// noprotect
+var n = 100000,
+    inverse = (x) => {
+      return -1/4*Math.log(1-x);
+      //1/n*Math.log(1-x)  - exponential dist
+      //Math.pow(x,1/2) - 2x
+      //Math.pow(x,1/3) - 3x^2
+    },
+    randx,
+    randy,
+    res = {},
+    height = 500;
+var canvas  = document.getElementById("chart");
+var ctx = canvas.getContext("2d");
+
+function icdf()
+{
+  for(var i = 0 ; i < n ; i++)
+  {
+    randy = Math.random();
+    randx = inverse(randy);
+    var a = randx + ""; 
+    a = parseInt(a[2]+a[3]);
+    if(res[a] == null)
+      {
+        res[a] = 1;
+      }
+    else
+      {
+        res[a]++; 
+      }
+  }
+  var x = 0;
+  var rectHeight;
+  for(i in res)
+    {
+      rectHeight = Math.round(res[i]/n*10000);
+      ctx.fillStyle = "#FF0000";
+      ctx.fillRect(6*parseInt(i), height - rectHeight, 3 ,rectHeight)
+      console.log(parseInt(i)*5);
+      ctx.stroke();
+    }
+}   
+   
+icdf();
+</script>
+</body>
+</html>
